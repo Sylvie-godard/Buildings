@@ -9,34 +9,65 @@ if(count($argv) < 3){
 }
 
 
-class Carre {
-    //fonction pour voir si le carré suivant est inférieur au carré précédent
-
-    public function __construct(){
-
+class Building {
+    private $tab = [];
+    // entire map of buildings
+    public function __construct($argv){
+        foreach($argv as $arg){
+            array_push($this->tab, intval($arg));
+        }
+        return $tab;
     }
+
+    // return position (id) of a value from a table
+    public function position($value, $tab){
+        for($i = 0; $i < count($tab); $i++){
+            if($value == $tab[$i]){
+                $key = array_search($value, $tab);
+                return $key;
+            }
+        }
+    }
+
+
+    //find a building egual or bigger than the first building
+    public function findOtherBuilding(){
+        $firstBuilding = null;
+        $secondBuilding = null;
+        for($i = 0; $i < count($this->tab) ; $i++){
+            if($firstBuilding == null){
+                $firstBuilding = $this->tab[$i]; // set building variable
+            }else{
+                if($this->tab[$i] >= $firstBuilding){
+                    $secondBuilding = $this->tab[$i]; 
+                    return $secondBuilding;            
+                }
+            }
+        }
+
+        if($secondBuilding == null){
+            for($i=0; $i < count($this->tab); $i++){
+                if($this->tab[$i] == $firstBuilding - 1){
+                    $secondBuilding = $this->tab[$i];
+                    return $secondBuilding;    
+                }
+            }
+        }
+    }
+
 
     private function findSmall($first, $second){
         $value = abs($first - $second);
         return $value;
     }
 
-    // array whith all values
-    public function entireBuilding($argv){
-        $tab = [];
-        foreach($argv as $arg){
-            array_push($tab, intval($arg));
-        }
-        return $tab;
-    }
+    
 
-    public function allBiggerBuildings($argv){
-        $tab = $this->entireBuilding($argv);
+    public function allBiggerBuildings(){
         $buildings = []; // array : buildings which are bigger than the building next to them
-        $lasValue = end($tab);
-        for($i = 0; $i < count($tab) - 1; $i++){
-            if($tab[$i+1] < $tab[$i]){
-                array_push($buildings, $tab[$i]);
+        for($i = 0; $i < count($this->tab) - 1; $i++){
+            if($this->tab[$i+1] < $this->tab[$i]){
+                array_push($buildings, $this->tab[$i]);
             } 
         }
         return $buildings;
@@ -55,33 +86,15 @@ class Carre {
         return $buildings;
     }
 
-
-    // return position (id) of a value from a table
-    public function position($value, $tab){
-        for($i = 0; $i < count($tab); $i++){
-            if($value == $tab[$i]){
-                $key = array_search($value, $tab);
-                return $key;
-            }
-        }
-    }
+    
 
     //return last bigger value
     public function lastBigBuilding($tab){
         return end($tab);
     }
-    
 }
 
-$test = new Carre;
-$allBuildings = $test->entireBuilding($argv);
-$bigBuildings = $test->allBiggerBuildings($argv);
-$last = $test->lastBigBuilding($bigBuildings);
-
-$smallBuildings = $test->allSmallBuildings($argv);
-var_dump($last);
-// var_dump($bigBuildings);
-// var_dump($smallBuildings);
-// $lastBigValues = $test->lastBigBuilding()
-
+$test = new Building($argv);
+$building = $test->findOtherBuilding();
+var_dump($building);
 ?>
