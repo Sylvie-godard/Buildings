@@ -58,7 +58,6 @@ class CalculateWaterSquareCommand extends Command
      * @param $indexStart (int) -> the index where we start
      * @return $indexSecondBuilding (int)            -> index of the Second Building
      */
-    
     public function findIndexSecondBuilding($indexStart){
         $firstBuilding = null;
         $indexFirstBuilding = null;
